@@ -84,32 +84,19 @@ const CurrentWeatherHeader = (props) => {
     },
   } = props;
 
-  const {
-    iconStyle,
-    headerViewStyle,
-    subViewStyle,
-    dateTextStyle,
-    locationTextStyle,
-    dateLocationViewStyle,
-    mainTextStyle,
-    predictionTextStyle,
-    subTextStyle,
-    mainViewStyle,
-  } = styles;
-
   return (
-    <View style={headerViewStyle}>
-      <View style={dateLocationViewStyle}>
-        <Text style={dateTextStyle}>{label}</Text>
-        <Text style={locationTextStyle}>{city}, {country}</Text>
+    <View style={styles.headerViewStyle}>
+      <View style={styles.dateLocationViewStyle}>
+        <Text style={styles.dateTextStyle}>{label}</Text>
+        <Text style={styles.locationTextStyle}>{city}, {country}</Text>
       </View>
-      <View style={mainViewStyle}>
-        <Text style={mainTextStyle}>{maxTemp}°</Text>
-        <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${icon}.png` }} style={iconStyle} />
+      <View style={styles.mainViewStyle}>
+        <Text style={styles.mainTextStyle}>{maxTemp}°</Text>
+        <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${icon}.png` }} style={styles.iconStyle} />
       </View>
-      <View style={subViewStyle}>
-        <Text style={subTextStyle}>{minTemp}°</Text>
-        <Text style={predictionTextStyle}>{description}</Text>
+      <View style={styles.subViewStyle}>
+        <Text style={styles.subTextStyle}>{minTemp}°</Text>
+        <Text style={styles.predictionTextStyle}>{description}</Text>
       </View>
     </View>
   );

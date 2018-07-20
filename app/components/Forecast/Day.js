@@ -39,25 +39,19 @@ const ForecastDay = (props) => {
     },
   } = props;
 
-  const {
-    iconStyle,
-    headerTextStyle,
-    subTextStyle,
-  } = styles;
-
   return (
     <Card>
-      <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${icon}.png` }} style={iconStyle} />
+      <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${icon}.png` }} style={styles.iconStyle} />
       <CardColumn>
         <CardSection>
-          <Text style={headerTextStyle}>{label}</Text>
-          <Text style={headerTextStyle}>{maxTemp}°</Text>
+          <Text style={styles.headerTextStyle}>{label}</Text>
+          <Text style={styles.headerTextStyle}>{maxTemp}°</Text>
         </CardSection>
         <CardSection>
-          <Text style={subTextStyle}>
+          <Text style={styles.subTextStyle}>
             {description}
           </Text>
-          <Text style={subTextStyle}>{minTemp}°</Text>
+          <Text style={styles.subTextStyle}>{minTemp}°</Text>
         </CardSection>
       </CardColumn>
     </Card>
