@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import COLORS from '../../styles';
 
 const styles = StyleSheet.create({
   containerStyle: {
     alignItems: 'stretch',
-    backgroundColor: COLORS.offWhite,
+    backgroundColor: 'transparent',
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 15,

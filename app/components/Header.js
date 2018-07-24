@@ -4,9 +4,11 @@ import {
   View,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import SunIcon from '../images/sun-icon.png';
+import BackIcon from '../images/back-icon.png';
 import COLORS from '../global/styles';
 
 const styles = StyleSheet.create({
@@ -35,17 +37,51 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.9,
   },
+  backStyle: {
+    color: COLORS.offWhite,
+    fontSize: 25,
+    lineHeight: 25,
+    paddingTop: 12,
+  },
 });
 
-const Header = ({ headerText }) => (
-  <View style={styles.viewStyle}>
-    <Image source={SunIcon} style={styles.iconStyle} />
-    <Text style={styles.textStyle}>{headerText}</Text>
-  </View>
-);
+const Header = (props) => {
+  const {
+    headerText,
+    navigationProps: {
+      navigation: {
+        state: {
+          routeName,
+        },
+        goBack,
+      },
+    },
+  } = props;
+  const isFirstScreen = routeName === 'Home';
+  const icon = isFirstScreen ? SunIcon : BackIcon;
+  return (
+    <View style={styles.viewStyle}>
+      <TouchableOpacity
+        onPress={() => goBack()}
+        disabled={isFirstScreen}
+      >
+        <Image source={icon} style={styles.iconStyle} />
+      </TouchableOpacity>
+      <Text style={styles.textStyle}>{headerText}</Text>
+    </View>
+  );
+};
 
 Header.propTypes = {
   headerText: PropTypes.string.isRequired,
+  navigationProps: PropTypes.shape({
+    navigation: PropTypes.shape({
+      state: PropTypes.shape({
+        routeName: PropTypes.string.isRequired,
+      }).isRequired,
+      goBack: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Header;

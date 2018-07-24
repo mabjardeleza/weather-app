@@ -1,13 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
-import Header from './app/components/Header';
-import Forecast from './app/components/Forecast';
+import Home from './app/components/Home';
 
 const App = () => (
-  <View style={{ flex: 1 }}>
-    <Header headerText="Sunshine" />
-    <Forecast />
-  </View>
+  <Home />
 );
 
 export default App;

@@ -1,99 +1,59 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
-import { camelizeKeys } from 'humps';
+import PropTypes from 'prop-types';
 import CurrentWeatherHeader from '../CurrentWeatherHeader';
 import ForecastList from './List';
-import { DAYS, MONTHS } from '../../global/constants';
 
-class Forecast extends Component {
-  constructor() {
-    super();
-    this.state = {
-      city: '',
-      country: '',
-      currentDay: {
-        label: '',
-        maxTemp: 0,
-        minTemp: 0,
-        weather: {
-          icon: '',
-          description: '',
-        },
-      },
-      forecasts: [{
-        label: '',
-        maxTemp: 0,
-        minTemp: 0,
-        weather: {
-          icon: '',
-          description: '',
-        },
-      }],
-    };
-  }
+const Forecast = (props) => {
+  const {
+    country,
+    city,
+    currentDay,
+    forecasts,
+    navigateToDetailsPage,
+  } = props;
 
-  componentDidMount() {
-    fetch('https://api.weatherbit.io/v2.0/forecast/daily?city=Adelaide&country=AU&key=dde8d8f055f74bc39f253757d643b379')
-      .then(res => res.json())
-      .then((res) => {
-        const {
-          countryCode,
-          cityName,
-          data,
-        } = camelizeKeys(res);
-        let forecasts = data;
-        forecasts.forEach((forecast, index) => {
-          forecasts[index].label = Forecast.getLabel(forecast.validDate, index);
-        });
-        const currentDay = forecasts[0];
-        forecasts = forecasts.slice(1);
-        this.setState({
-          city: cityName, country: countryCode, currentDay, forecasts,
-        });
-      });
-  }
+  return (
+    <ScrollView>
+      <CurrentWeatherHeader
+        country={country}
+        city={city}
+        forecast={currentDay}
+      />
+      <ForecastList
+        details={forecasts}
+        navigateToDetailsPage={navigateToDetailsPage}
+      />
+    </ScrollView>
+  );
+};
 
-  static getLabel(date, index) {
-    if (index === 1) {
-      return 'Tomorrow';
-    }
-
-    const dateObject = new Date(date);
-    const weekday = DAYS[dateObject.getDay()];
-    const month = MONTHS[dateObject.getMonth()];
-    const day = dateObject.getDate();
-
-    if (index === 0) {
-      return `Today, ${month} ${day}`;
-    }
-    if (index < 6) {
-      return weekday;
-    }
-
-    const shortenedMonth = month.substr(0, 3);
-    const shortenedWeekday = weekday.substr(0, 3);
-    return `${shortenedWeekday} ${shortenedMonth} ${day}`;
-  }
-
-  render() {
-    const {
-      country,
-      city,
-      currentDay,
-      forecasts,
-    } = this.state;
-
-    return (
-      <ScrollView>
-        <CurrentWeatherHeader
-          country={country}
-          city={city}
-          forecast={currentDay}
-        />
-        <ForecastList details={forecasts} />
-      </ScrollView>
-    );
-  }
-}
+Forecast.propTypes = {
+  country: PropTypes.string.isRequired,
+  city: PropTypes.string.isRequired,
+  currentDay: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    maxTemp: PropTypes.number.isRequired,
+    minTemp: PropTypes.number.isRequired,
+    weather: PropTypes.shape({
+      icon: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  forecasts: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    maxTemp: PropTypes.number.isRequired,
+    minTemp: PropTypes.number.isRequired,
+    windSpd: PropTypes.number.isRequired,
+    windCdir: PropTypes.string.isRequired,
+    pres: PropTypes.number.isRequired,
+    rh: PropTypes.number.isRequired,
+    weather: PropTypes.shape({
+      icon: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+  })).isRequired,
+  navigateToDetailsPage: PropTypes.func.isRequired,
+};
 
 export default Forecast;

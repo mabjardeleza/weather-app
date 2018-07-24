@@ -1,15 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import ForecastDay from './Day';
+import ForecastListItem from './ListItem';
 
-const ForecastList = ({ details }) => (
+const ForecastList = ({ details, navigateToDetailsPage }) => (
   <View>
     {details
-      .map(day => (
-        <ForecastDay
+      .map((day, index) => (
+        <ForecastListItem
           key={day.label}
           details={day}
+          navigateToDetailsPage={() => navigateToDetailsPage(index)}
         />
       ))
     }
@@ -26,5 +27,6 @@ ForecastList.propTypes = {
       description: PropTypes.string.isRequired,
     }).isRequired,
   })).isRequired,
+  navigateToDetailsPage: PropTypes.func.isRequired,
 };
 export default ForecastList;
