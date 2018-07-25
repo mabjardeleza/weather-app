@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+
 import Weather from './Weather';
 import COLORS from '../../global/styles';
 
@@ -79,7 +80,6 @@ const Details = (props) => {
       day,
       weekday,
       month,
-      weather,
       windSpd,
       windCdir,
       pres,

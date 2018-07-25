@@ -6,6 +6,7 @@ import {
   Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
 import COLORS from '../../global/styles';
 
 const styles = StyleSheet.create({

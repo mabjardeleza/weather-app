@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
 import SunIcon from '../images/sun-icon.png';
 import BackIcon from '../images/back-icon.png';
 import COLORS from '../global/styles';
@@ -48,21 +49,15 @@ const styles = StyleSheet.create({
 const Header = (props) => {
   const {
     headerText,
-    navigationProps: {
-      navigation: {
-        state: {
-          routeName,
-        },
-        goBack,
-      },
-    },
+    onBackButtonPress,
+    routeName,
   } = props;
   const isFirstScreen = routeName === 'Home';
   const icon = isFirstScreen ? SunIcon : BackIcon;
   return (
     <View style={styles.viewStyle}>
       <TouchableOpacity
-        onPress={() => goBack()}
+        onPress={() => onBackButtonPress()}
         disabled={isFirstScreen}
       >
         <Image source={icon} style={styles.iconStyle} />
@@ -74,14 +69,8 @@ const Header = (props) => {
 
 Header.propTypes = {
   headerText: PropTypes.string.isRequired,
-  navigationProps: PropTypes.shape({
-    navigation: PropTypes.shape({
-      state: PropTypes.shape({
-        routeName: PropTypes.string.isRequired,
-      }).isRequired,
-      goBack: PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
+  onBackButtonPress: PropTypes.func.isRequired,
+  routeName: PropTypes.string.isRequired,
 };
 
 export default Header;

@@ -1,13 +1,34 @@
 import React, { Component } from 'react';
-import { Linking, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { camelizeKeys } from 'humps';
+
+import { forecastList, selection } from '../actions';
 import Forecast from '../components/Forecast';
+import Header from '../components/Header';
 import Spinner from '../global/components/Spinner';
 import { DAYS, MONTHS } from '../global/constants';
 
 class ForecastPage extends Component {
-  constructor() {
-    super();
+  // static navigationOptions = ({ navigation }) => ({
+  //   header: (<Header headerText="Sunshine"
+  // routeName={navigation.state.routeName}
+  // onBackButtonPress={() => navigation.goBack()} />),
+  // });
+
+  // static propTypes = {
+  //   navigation: PropTypes.shape({
+  //     navigate: PropTypes.func.isRequired,
+  //     goBack: PropTypes.func.isRequired,
+  //     state: PropTypes.shape({
+  //       routeName: PropTypes.string.isRequired,
+  //     }).isRequired,
+  //   }).isRequired,
+  // };
+
+  constructor(props) {
+    super(props);
 
     this.state = {
       city: '',
@@ -21,22 +42,6 @@ class ForecastPage extends Component {
           description: '',
         },
       },
-      forecasts: [{
-        label: '',
-        day: 0,
-        weekday: '',
-        month: '',
-        maxTemp: 0,
-        minTemp: 0,
-        windSpd: 0,
-        windCdir: 'NA',
-        pres: 0,
-        rh: 0,
-        weather: {
-          icon: '',
-          description: '',
-        },
-      }],
       navigateToDetailsPage: () => {},
       loading: false,
     };
@@ -57,6 +62,7 @@ class ForecastPage extends Component {
       cityName,
       data,
     } = camelizeKeys(res);
+    const { setForecastListState } = this.props;
     let forecasts = data;
     forecasts.forEach((forecast, index) => {
       const {
@@ -72,11 +78,11 @@ class ForecastPage extends Component {
     });
     const currentDay = forecasts[0];
     forecasts = forecasts.slice(1);
+    setForecastListState(forecasts);
     this.setState({
       city: cityName,
       country: countryCode,
       currentDay,
-      forecasts,
       loading: false,
       navigateToDetailsPage: this.navigateToDetailsPage.bind(this),
     });
@@ -109,20 +115,10 @@ class ForecastPage extends Component {
     };
   }
 
-  navigateToDetailsPage(index) {
-    const { navigation } = this.props;
-    const { forecasts } = this.state;
-    navigation.navigate('Details', {
-      forecast: forecasts[index],
-    });
-  }
-
-  colorChange() {
-    const city = 'Press';
-    this.setState({
-      city,
-    });
-    Linking.openURL('https://www.google.com');
+  navigateToDetailsPage(key) {
+    const { navigation: { navigate }, setSelectedForecast } = this.props;
+    setSelectedForecast(key);
+    navigate('Details');
   }
 
   render() {
@@ -130,10 +126,13 @@ class ForecastPage extends Component {
       country,
       city,
       currentDay,
-      forecasts,
       loading,
       navigateToDetailsPage,
     } = this.state;
+
+    const {
+      forecastData,
+    } = this.props;
 
     const customSpinnerStyle = {
       height: Dimensions.get('window').height,
@@ -147,7 +146,7 @@ class ForecastPage extends Component {
       <Forecast
         country={country}
         city={city}
-        forecasts={forecasts}
+        forecasts={forecastData}
         currentDay={currentDay}
         navigateToDetailsPage={navigateToDetailsPage}
       />
@@ -155,4 +154,44 @@ class ForecastPage extends Component {
   }
 }
 
-export default ForecastPage;
+ForecastPage.navigationOptions = ({ navigation }) => ({
+  header: (<Header headerText="Sunshine" routeName={navigation.state.routeName} onBackButtonPress={() => navigation.goBack()} />),
+});
+
+ForecastPage.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+    state: PropTypes.shape({
+      routeName: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  setSelectedForecast: PropTypes.func.isRequired,
+  setForecastListState: PropTypes.func.isRequired,
+  forecastData: PropTypes.arrayOf(PropTypes.shape({
+    day: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+    weekday: PropTypes.string.isRequired,
+    month: PropTypes.string.isRequired,
+    maxTemp: PropTypes.number.isRequired,
+    minTemp: PropTypes.number.isRequired,
+    windSpd: PropTypes.number.isRequired,
+    windCdir: PropTypes.string.isRequired,
+    pres: PropTypes.number.isRequired,
+    rh: PropTypes.number.isRequired,
+    weather: PropTypes.shape({
+      icon: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+  })).isRequired,
+};
+
+const mapStateToProps = state => ({ forecastData: state.forecastList.forecasts });
+
+const mapDispatchToProps = {
+  setSelectedForecast: selection.set,
+  setForecastListState: forecastList.success,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForecastPage);

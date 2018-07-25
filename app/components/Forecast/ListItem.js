@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableHighlight,
 } from 'react-native';
+
 import Card from '../../global/components/Card';
 import CardColumn from '../../global/components/Card/CardColumn';
 import CardSection from '../../global/components/Card/CardSection';

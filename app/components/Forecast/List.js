@@ -1,21 +1,41 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { Component } from 'react';
+import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
+
 import ForecastListItem from './ListItem';
 
-const ForecastList = ({ details, navigateToDetailsPage }) => (
-  <View>
-    {details
-      .map((day, index) => (
-        <ForecastListItem
-          key={day.label}
-          details={day}
-          navigateToDetailsPage={() => navigateToDetailsPage(index)}
-        />
-      ))
-    }
-  </View>
-);
+class ForecastList extends Component {
+  static keyExtractor(item) {
+    return item.label;
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.renderItem = this.renderItem.bind(this);
+  }
+
+  renderItem({ item }) {
+    const { navigateToDetailsPage } = this.props;
+    return (
+      <ForecastListItem
+        details={item}
+        navigateToDetailsPage={() => navigateToDetailsPage(ForecastList.keyExtractor(item))}
+      />
+    );
+  }
+
+  render() {
+    const { details } = this.props;
+    return (
+      <FlatList
+        data={details}
+        renderItem={this.renderItem}
+        keyExtractor={ForecastList.keyExtractor}
+      />
+    );
+  }
+}
 
 ForecastList.propTypes = {
   details: PropTypes.arrayOf(PropTypes.shape({
