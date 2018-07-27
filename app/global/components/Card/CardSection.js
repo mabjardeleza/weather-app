@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   containerStyle: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',

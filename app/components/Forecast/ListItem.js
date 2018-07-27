@@ -39,8 +39,8 @@ const ForecastListItem = (props) => {
   const {
     details: {
       label,
-      maxTemp,
-      minTemp,
+      convertedMaxTemp,
+      convertedMinTemp,
       weather: {
         icon,
         description,
@@ -61,13 +61,13 @@ const ForecastListItem = (props) => {
         <CardColumn>
           <CardSection>
             <Text style={styles.headerTextStyle}>{label}</Text>
-            <Text style={styles.headerTextStyle}>{maxTemp}°</Text>
+            <Text style={styles.headerTextStyle}>{convertedMaxTemp}°</Text>
           </CardSection>
           <CardSection>
             <Text style={styles.subTextStyle}>
               {description}
             </Text>
-            <Text style={styles.subTextStyle}>{minTemp}°</Text>
+            <Text style={styles.subTextStyle}>{convertedMinTemp}°</Text>
           </CardSection>
         </CardColumn>
       </Card>
@@ -78,8 +78,8 @@ const ForecastListItem = (props) => {
 ForecastListItem.propTypes = {
   details: PropTypes.shape({
     label: PropTypes.string.isRequired,
-    maxTemp: PropTypes.number.isRequired,
-    minTemp: PropTypes.number.isRequired,
+    convertedMaxTemp: PropTypes.number.isRequired,
+    convertedMinTemp: PropTypes.number.isRequired,
     weather: PropTypes.shape({
       icon: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,

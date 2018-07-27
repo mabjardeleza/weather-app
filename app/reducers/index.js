@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
 import { forecastList } from './forecastList';
-import { selection } from './selection';
+import { forecastSelection } from './selection';
+import { settings } from './settings';
 
 export default combineReducers({
   forecastList,
-  selection,
+  forecastSelection,
+  settings,
 });

@@ -10,12 +10,13 @@ import PropTypes from 'prop-types';
 
 import SunIcon from '../images/sun-icon.png';
 import BackIcon from '../images/back-icon.png';
+import EllipsisIcon from '../images/vertical-ellipsis-icon.png';
+import { ToggableButton } from '../global/components/Button';
 import COLORS from '../global/styles';
 
 const styles = StyleSheet.create({
   iconStyle: {
     height: 30,
-    marginRight: 10,
     width: 30,
   },
   textStyle: {
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pacifico',
     fontSize: 25,
     lineHeight: 25,
+    marginLeft: 10,
     paddingTop: 12,
   },
   viewStyle: {
@@ -32,11 +34,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     height: 60,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     padding: 15,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.9,
+  },
+  brandStyle: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
   },
   backStyle: {
     color: COLORS.offWhite,
@@ -51,18 +59,28 @@ const Header = (props) => {
     headerText,
     onBackButtonPress,
     routeName,
+    onSettingsButtonPress,
   } = props;
   const isFirstScreen = routeName === 'Home';
+  const isSettings = routeName === 'Settings';
   const icon = isFirstScreen ? SunIcon : BackIcon;
   return (
     <View style={styles.viewStyle}>
-      <TouchableOpacity
-        onPress={() => onBackButtonPress()}
-        disabled={isFirstScreen}
+      <View style={styles.brandStyle}>
+        <TouchableOpacity
+          onPress={() => onBackButtonPress()}
+          disabled={isFirstScreen}
+        >
+          <Image source={icon} style={styles.iconStyle} />
+        </TouchableOpacity>
+        <Text style={styles.textStyle}>{headerText}</Text>
+      </View>
+      <ToggableButton
+        onPress={() => onSettingsButtonPress()}
+        visible={!isSettings}
       >
-        <Image source={icon} style={styles.iconStyle} />
-      </TouchableOpacity>
-      <Text style={styles.textStyle}>{headerText}</Text>
+        <Image source={EllipsisIcon} style={styles.iconStyle} />
+      </ToggableButton>
     </View>
   );
 };
@@ -71,6 +89,7 @@ Header.propTypes = {
   headerText: PropTypes.string.isRequired,
   onBackButtonPress: PropTypes.func.isRequired,
   routeName: PropTypes.string.isRequired,
+  onSettingsButtonPress: PropTypes.func.isRequired,
 };
 
 export default Header;

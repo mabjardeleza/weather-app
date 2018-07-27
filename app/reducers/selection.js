@@ -3,7 +3,7 @@ const initialForecastKeyState = {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export function selection(state = initialForecastKeyState, action) {
+export function forecastSelection(state = initialForecastKeyState, action) {
   switch (action.type) {
     case 'select_forecast':
       return {

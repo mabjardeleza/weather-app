@@ -40,8 +40,8 @@ class ForecastList extends Component {
 ForecastList.propTypes = {
   details: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
-    maxTemp: PropTypes.number.isRequired,
-    minTemp: PropTypes.number.isRequired,
+    convertedMaxTemp: PropTypes.number.isRequired,
+    convertedMinTemp: PropTypes.number.isRequired,
     weather: PropTypes.shape({
       icon: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,

@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Weather from './Weather';
-import COLORS from '../../global/styles';
+import Weather from '../global/components/Weather';
+import COLORS from '../global/styles';
 
 const styles = StyleSheet.create({
   iconStyle: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.offWhite,
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingLeft: 50,
+    paddingLeft: 40,
     paddingBottom: 20,
   },
   dateLocationViewStyle: {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Details = (props) => {
+const WeatherDetails = (props) => {
   const {
     forecast,
     forecast: {
@@ -105,7 +105,7 @@ const Details = (props) => {
   );
 };
 
-Details.propTypes = {
+WeatherDetails.propTypes = {
   forecast: PropTypes.shape({
     day: PropTypes.number.isRequired,
     weekday: PropTypes.string.isRequired,
@@ -121,4 +121,4 @@ Details.propTypes = {
   }).isRequired,
 };
 
-export default Details;
+export default WeatherDetails;

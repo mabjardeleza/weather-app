@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import COLORS from '../../global/styles';
+import COLORS from '../styles';
 
 const styles = StyleSheet.create({
   iconStyle: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   mainTextStyle: {
     alignSelf: 'center',
     color: COLORS.gray,
-    fontSize: 70,
+    fontSize: 80,
     fontWeight: '100',
   },
   subTextStyle: {
@@ -50,23 +50,34 @@ const styles = StyleSheet.create({
 const Weather = (props) => {
   const {
     forecast: {
-      maxTemp,
-      minTemp,
+      convertedMaxTemp,
+      convertedMinTemp,
       weather: {
         icon,
         description,
       },
     },
+    backgroundColor,
+    textColor,
   } = props;
+
+  const customBackgroundStyle = {
+    backgroundColor,
+  };
+
+  const customTextStyle = {
+    color: textColor,
+  };
+
   return (
-    <View>
+    <View styles={customBackgroundStyle}>
       <View style={styles.mainViewStyle}>
-        <Text style={styles.mainTextStyle}>{maxTemp}°</Text>
+        <Text style={[styles.mainTextStyle, customTextStyle]}>{convertedMaxTemp}°</Text>
         <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${icon}.png` }} style={styles.iconStyle} />
       </View>
       <View style={styles.subViewStyle}>
-        <Text style={styles.subTextStyle}>{minTemp}°</Text>
-        <Text style={styles.predictionTextStyle}>{description}</Text>
+        <Text style={[styles.subTextStyle, customTextStyle]}>{convertedMinTemp}°</Text>
+        <Text style={[styles.predictionTextStyle, customTextStyle]}>{description}</Text>
       </View>
     </View>
   );
@@ -74,13 +85,19 @@ const Weather = (props) => {
 
 Weather.propTypes = {
   forecast: PropTypes.shape({
-    maxTemp: PropTypes.number.isRequired,
-    minTemp: PropTypes.number.isRequired,
+    convertedMaxTemp: PropTypes.number.isRequired,
+    convertedMinTemp: PropTypes.number.isRequired,
     weather: PropTypes.shape({
       icon: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  backgroundColor: PropTypes.string,
+  textColor: PropTypes.string,
 };
 
+Weather.defaultProps = {
+  backgroundColor: COLORS.offWhite,
+  textColor: COLORS.gray,
+};
 export default Weather;

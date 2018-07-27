@@ -34,8 +34,8 @@ Forecast.propTypes = {
   city: PropTypes.string.isRequired,
   currentDay: PropTypes.shape({
     label: PropTypes.string.isRequired,
-    maxTemp: PropTypes.number.isRequired,
-    minTemp: PropTypes.number.isRequired,
+    convertedMaxTemp: PropTypes.number.isRequired,
+    convertedMinTemp: PropTypes.number.isRequired,
     weather: PropTypes.shape({
       icon: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
@@ -43,8 +43,8 @@ Forecast.propTypes = {
   }).isRequired,
   forecasts: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
-    maxTemp: PropTypes.number.isRequired,
-    minTemp: PropTypes.number.isRequired,
+    convertedMaxTemp: PropTypes.number.isRequired,
+    convertedMinTemp: PropTypes.number.isRequired,
     windSpd: PropTypes.number.isRequired,
     windCdir: PropTypes.string.isRequired,
     pres: PropTypes.number.isRequired,
